@@ -6,18 +6,20 @@ from tensorflow.keras.models import Sequential as seq
 from tensorflow.keras.layers import Dense, Activation, Dropout
 from tensorflow.keras.optimizers import SGD as sgd
 
-
-lem = wnl
+lem = wnl()
 intents = json.loads(open("intents.json").read())
-words,classes,docs = []
+
+words = []
+classes = []
+docs = []
 ignored_letters = ["?","!",".",","]
 
 
 for intent in intents["intents"]:
     for pattern in intent["patterns"]:
-        word_list = nltk.tokenize(pattern)
-        words.append(word_list)
-        docs.append((word_list),intent["tag"])
+        word_list = nltk.word_tokenize(pattern)
+        words.extend(word_list)
+        docs.append((word_list,intent["tag"]))
         if intent["tag"] not in classes:
             classes.append(intent["tag"])
 
